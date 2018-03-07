@@ -3,10 +3,9 @@ class Player
   int x = -99;
   int y = -99;
   final int s = 25;
-  final color c = color(245, 121, 0);
+  final color c = color(255);
   boolean swiming = false;
   boolean climbing = false;
-  boolean flying = false;
   int shooting = 75;
 
   void init()
@@ -17,9 +16,7 @@ class Player
       int ww = int(sqrt(pixels.length));
       int xx = int(random(ww-s) / s) * s;
       int yy = int(random(ww-s) / s) * s;
-      color ci = pixels[xx+yy*ww];
-      color cf = pixels[xx+s-1+(yy+s-1)*ww];
-      if (ci == grass && cf == grass) {
+      if (pixel(xx, yy) == grass) {
         ok = true;
         x = xx;
         y = yy;
@@ -30,7 +27,13 @@ class Player
   void show()
   {
     fill(c);
-    rect(x, y, s, s);
+    pushMatrix();
+    translate(x+s/2, y+s/2);
+    rotate(QUARTER_PI);
+    rectMode(CENTER);
+    rect(0, 0, s, s);
+    rectMode(CORNER);
+    popMatrix();
   }
 
   void move(char mm)
@@ -59,12 +62,10 @@ class Player
     if (yy < 0) yy += ww;
     if (xx >= ww) xx -= ww;
     if (yy >= ww) yy -= ww;
-    color ci = pixels[xx+yy*ww];
-    color cf = pixels[xx+s-1+(yy+s-1)*ww];
-    if (ci == empty && cf == empty) exit();
-    if ((ci == grass && cf == grass)
-      || (ci == water && cf == water && swiming)
-      || (ci == rocks && cf == rocks && climbing)) {
+    color cc = pixel(xx, yy);
+    if ((cc == grass || cc == empty)
+      || (cc == water && swiming)
+      || (cc == rocks && climbing)) {
       x = xx;
       y = yy;
     }

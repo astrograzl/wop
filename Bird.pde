@@ -1,34 +1,31 @@
-class Bird
+class Bird extends Animal
 {
-  int x, y;
-  int sx, sy;
-  final int a = 25;
-  final int b = 75;
-  final color c = color(46, 52, 54, 192);
-
   Bird()
   {
-    if (random(2) < 1) {
-      sx = a;
-      sy = b;
-    } else {
-      sx = b;
-      sy = a;
-    }
-    x = int(random(width) / a) * a;
-    y = int(random(height) / a) * a;
+    super(50, empty);
+    type = 'B';
+    lives = 1;
+    value = 15;
+    update = 10;
+    kolor = color(46, 52, 54, 192);
   }
 
   void show()
   {
-    fill(c);
-    rect(x, y, sx, sy);
+    fill(kolor);
+    ellipse(x, y, size, size);
   }
 
   void move()
   {
-    int d = floor(random(3)) - 1;
-    if (random(2) < 1) x += a * d;
-    else y += a * d;
+    loadPixels();
+    int dd = floor(random(3)) - 1;
+    int ww = int(sqrt(pixels.length));
+    if (random(2) < 1) x += size * dd;
+    else y += size * dd;
+    if (x < 0) x += ww;
+    if (y < 0) y += ww;
+    if (x >= ww) x -= ww;
+    if (y >= ww) y -= ww;
   }
 }
