@@ -18,14 +18,12 @@ class Bird extends Animal
 
   void move()
   {
-    loadPixels();
     int dd = floor(random(3)) - 1;
-    int ww = int(sqrt(pixels.length));
     if (random(2) < 1) x += size * dd;
     else y += size * dd;
-    if (x < 0) x += ww;
-    if (y < 0) y += ww;
-    if (x >= ww) x -= ww;
-    if (y >= ww) y -= ww;
+    if (x < 0) x += Width;
+    if (y < 0) y += Hight;
+    if (x >= Width) x -= Width;
+    if (y >= Hight) y -= Hight;
   }
 }

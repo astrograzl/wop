@@ -12,17 +12,15 @@ class Fox extends Animal
   
   void move()
   {
-    loadPixels();
     int xx = x;
     int yy = y;
     int dd = floor(random(3)) - 1;
-    int ww = int(sqrt(pixels.length));
     if (random(2) < 1) xx += size * dd;
     else yy += size * dd;
-    if (xx < 0) xx += ww;
-    if (yy < 0) yy += ww;
-    if (xx >= ww) xx -= ww;
-    if (yy >= ww) yy -= ww;
+    if (xx < 0) xx += Width;
+    if (yy < 0) yy += Hight;
+    if (xx >= Width) xx -= Width;
+    if (yy >= Hight) yy -= Hight;
     if (pixel(xx, yy) == grass) {
       x = xx;
       y = yy;

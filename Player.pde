@@ -10,12 +10,10 @@ class Player
 
   void init()
   {
-    loadPixels();
     boolean ok = false;
     while (!ok) {
-      int ww = int(sqrt(pixels.length));
-      int xx = int(random(ww-size) / size) * size;
-      int yy = int(random(ww-size) / size) * size;
+      int xx = int(random(Width-size) / size) * size;
+      int yy = int(random(Hight-size) / size) * size;
       if (pixel(xx, yy) == grass) {
         ok = true;
         x = xx;
@@ -56,12 +54,10 @@ class Player
     default: 
       break;
     }
-    loadPixels();
-    int ww = int(sqrt(pixels.length));
-    if (xx < 0) xx += ww;
-    if (yy < 0) yy += ww;
-    if (xx >= ww) xx -= ww;
-    if (yy >= ww) yy -= ww;
+    if (xx < 0) xx += Width;
+    if (yy < 0) yy += Hight;
+    if (xx >= Width) xx -= Width;
+    if (yy >= Hight) yy -= Hight;
     color cc = pixel(xx, yy);
     if ((cc == grass || cc == empty)
       || (cc == water && swiming)

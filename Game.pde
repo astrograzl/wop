@@ -1,3 +1,6 @@
+final int Width = 1000;
+final int Hight = 1000;
+
 void setup()
 {
   size(1000, 1000, P2D);
@@ -140,8 +143,8 @@ void shoots()
       Shoots.remove(s); 
       continue;
     }
-    if (shoot.x < 0 || shoot.x > width
-      || shoot.y < 0 || shoot.y > height) {
+    if (shoot.x < 0 || shoot.x >= Width
+      || shoot.y < 0 || shoot.y >= Hight) {
       Shoots.remove(s); 
       continue;
     }
@@ -180,18 +183,15 @@ void animals()
     if (frameCount % animal.update == 0)
       animal.move();
     animal.show();
-    if (animal.x < 0 || animal.x >= width
-      || animal.y < 0 || animal.y >= height) {
+    if (animal.x < 0 || animal.x >= Width
+      || animal.y < 0 || animal.y >= Hight) {
       score -= animal.value;
       Animals.remove(a);
     }
   }
 }
 
-color pixel(int x, int y)
-{
-  return World.get(x, y);
-}
+color pixel(int x, int y) { return World.get(x, y); }
 
 void gameover()
 {

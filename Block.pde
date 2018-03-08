@@ -28,8 +28,8 @@ class Block
 
   void init()
   {
-    x = int(random(width) / size) * size;
-    y = int(random(height) / size) * size;
+    x = int(random(Width) / size) * size;
+    y = int(random(Hight) / size) * size;
   }
 
   void step()
@@ -37,12 +37,12 @@ class Block
     int dd = floor(random(3)) - 1;
     if (random(2) < 1) {
       x += size * dd;
-      if (x < 0) x += width;
-      if (x >= width) x -= width;
+      if (x < 0) x += Width;
+      if (x >= Width) x -= Width;
     } else {
       y += size * dd;
-      if (y < 0) y += height;
-      if (y >= height) y -= height;
+      if (y < 0) y += Hight;
+      if (y >= Hight) y -= Hight;
     }
     fill(kolor);
     rect(x, y, size, size);
