@@ -6,7 +6,7 @@ class Rabit extends Animal
     type = 'R';
     lives = 1;
     value = 5;
-    update = 5;
+    update = 25;
     kolor = color(136, 138, 133, 192);
   }
 }

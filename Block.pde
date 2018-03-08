@@ -1,49 +1,50 @@
 final color empty = color(192);
 final color grass = color(78, 154, 6);
-final color rocks = color(143, 89, 2);
+final color trees = color(143, 89, 2);
 final color water = color(32, 74, 135);
-final color[] Colors = {grass, rocks, water};
+final color[] Colors = {grass, trees, water};
 
 final int[] Sizes = {100, 50, 25, 25};
 final int[] Steps = {500, 750, 2000};
 
 Block Grass = new Block(0);
-Block Rocks = new Block(1);
+Block Trees = new Block(1);
 Block Water = new Block(2);
-Block[] Blocks = {Grass, Rocks, Water};
+Block[] Blocks = {Grass, Trees, Water};
 
 class Block
 {
-  int t, s;
+  int type;
+  int size;
   int x, y;
-  color c;
+  color kolor;
 
-  Block(int type)
+  Block(int t)
   {
-    t = type;
-    s = Sizes[t];
-    c = Colors[t];
+    type = t;
+    size = Sizes[type];
+    kolor = Colors[type];
   }
 
   void init()
   {
-    x = int(random(width) / s) * s;
-    y = int(random(height) / s) * s;
+    x = int(random(width) / size) * size;
+    y = int(random(height) / size) * size;
   }
 
   void step()
   {
-    int d = floor(random(3)) - 1;
+    int dd = floor(random(3)) - 1;
     if (random(2) < 1) {
-      x += s * d;
+      x += size * dd;
       if (x < 0) x += width;
       if (x >= width) x -= width;
     } else {
-      y += s * d;
+      y += size * dd;
       if (y < 0) y += height;
       if (y >= height) y -= height;
     }
-    fill(c);
-    rect(x, y, s, s);
+    fill(kolor);
+    rect(x, y, size, size);
   }
 }

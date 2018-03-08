@@ -2,8 +2,8 @@ class Player
 {
   int x = -99;
   int y = -99;
-  final int s = 25;
-  final color c = color(255);
+  final int size = 25;
+  final color kolor = color(255);
   boolean swiming = false;
   boolean climbing = false;
   int shooting = 75;
@@ -14,8 +14,8 @@ class Player
     boolean ok = false;
     while (!ok) {
       int ww = int(sqrt(pixels.length));
-      int xx = int(random(ww-s) / s) * s;
-      int yy = int(random(ww-s) / s) * s;
+      int xx = int(random(ww-size) / size) * size;
+      int yy = int(random(ww-size) / size) * size;
       if (pixel(xx, yy) == grass) {
         ok = true;
         x = xx;
@@ -26,12 +26,12 @@ class Player
 
   void show()
   {
-    fill(c);
+    fill(kolor);
     pushMatrix();
-    translate(x+s/2, y+s/2);
+    translate(x+size/2, y+size/2);
     rotate(QUARTER_PI);
     rectMode(CENTER);
-    rect(0, 0, s, s);
+    rect(0, 0, size, size);
     rectMode(CORNER);
     popMatrix();
   }
@@ -42,16 +42,16 @@ class Player
     int yy = y;
     switch (mm) {
     case 'a': 
-      xx -= s;  
+      xx -= size;  
       break;
     case 'd': 
-      xx += s; 
+      xx += size; 
       break;
     case 's':
-      yy += s; 
+      yy += size; 
       break;
     case 'w': 
-      yy -= s; 
+      yy -= size; 
       break;
     default: 
       break;
@@ -65,7 +65,7 @@ class Player
     color cc = pixel(xx, yy);
     if ((cc == grass || cc == empty)
       || (cc == water && swiming)
-      || (cc == rocks && climbing)) {
+      || (cc == trees && climbing)) {
       x = xx;
       y = yy;
     }
@@ -80,7 +80,7 @@ class Player
       shoot(8);
     }
     if (Shoots.size() == 8) return;
-    else Score -= 1;
+    else score -= 1;
     switch (sh) {
     case 4:
       Shoots.add(new Shoot(x, y, -1, 0)); 

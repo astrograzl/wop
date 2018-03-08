@@ -9,14 +9,13 @@ void setup()
   mkgame();
 }
 
-int Score;
+int score;
 int ti, tf;
 PImage World;
 Player Pixel;
+boolean GameOver;
 ArrayList<Shoot> Shoots = new ArrayList<Shoot>();
 ArrayList<Animal> Animals = new ArrayList<Animal>();
-boolean GameOver = false;
-boolean loop = true;
 
 void draw()
 {
@@ -26,9 +25,9 @@ void draw()
     mkgame();
   }
   image(World, 0, 0);
-  animals();
   player(); 
   shoots();
+  animals();
   if (Animals.size() == 0) {
     gameover();
   }
@@ -39,13 +38,15 @@ void keyPressed()
   if (key == BACKSPACE) {
     ti = -1;
     redraw();
-  } else if (!GameOver && (key == RETURN || key == ENTER)) {
-    loop = true;
-    loop();
     return;
   }
-  if (loop)
+  if (!GameOver)
     switch (key) {
+    case ENTER:
+    case RETURN:
+      ti = millis();
+      loop();
+      break;
     case 'a': 
       Pixel.move('a'); 
       break;
@@ -87,9 +88,7 @@ void mkworld()
       Blocks[b].step();
   }
   save("world.tif");
-  loadPixels();
   World = loadImage("world.tif");
-  updatePixels();
 }
 
 void mkanime()
@@ -109,12 +108,11 @@ void mkanime()
 
 void mkgame()
 {
-  Score = 0;
+  noLoop();
+  score = 0;
+  Shoots.clear();
   Pixel = new Player();
   GameOver = false;
-  ti = millis();
-  loop = false;
-  noLoop();
 }
 
 void player()
@@ -130,18 +128,24 @@ void player()
 
 void shoots()
 {
-  for (int s = 0; s < Shoots.size(); s++) {
+  for (int s = Shoots.size() - 1; s >= 0; s--) {
     Shoot shoot = Shoots.get(s);
     shoot.move();
     shoot.show();
-    if (shoot.dd > Pixel.shooting)
-      Shoots.remove(s);
-    if (pixel(shoot.x, shoot.y) == empty)
-      Shoots.remove(s);
+    if (shoot.dd > Pixel.shooting) {
+      Shoots.remove(s); 
+      continue;
+    }
+    if (pixel(shoot.x, shoot.y) == empty) {
+      Shoots.remove(s); 
+      continue;
+    }
     if (shoot.x < 0 || shoot.x > width
-      || shoot.y < 0 || shoot.y > height)
-      Shoots.remove(s);
-    for (int a = 0; a < Animals.size(); a++) {
+      || shoot.y < 0 || shoot.y > height) {
+      Shoots.remove(s); 
+      continue;
+    }
+    for (int a = Animals.size() - 1; a >= 0; a--) {
       Animal animal = Animals.get(a);
       if (shoot.x >= animal.x && shoot.x < animal.x+animal.size
         && shoot.y >= animal.y && shoot.y < animal.y+animal.size) {
@@ -149,7 +153,7 @@ void shoots()
         Shoots.remove(s);
       }
       if (animal.lives == 0) {
-        Score += animal.value;
+        score += animal.value;
         switch (animal.type) {
         case 'R': 
           Pixel.shooting *= 2; 
@@ -171,14 +175,14 @@ void shoots()
 
 void animals()
 {
-  for (int a = 0; a < Animals.size(); a++) {
+  for (int a = Animals.size() - 1; a >= 0; a--) {
     Animal animal = Animals.get(a);
     if (frameCount % animal.update == 0)
       animal.move();
     animal.show();
     if (animal.x < 0 || animal.x >= width
       || animal.y < 0 || animal.y >= height) {
-      Score -= animal.value;
+      score -= animal.value;
       Animals.remove(a);
     }
   }
@@ -191,20 +195,25 @@ color pixel(int x, int y)
 
 void gameover()
 {
+  noLoop();
   tf = millis();
   int dt = (tf - ti) / 1000;
   for (int a = 0; a < Animals.size(); a++) {
     Animal animal = Animals.get(a);
-    Score -= animal.value;
+    score -= animal.value;
   }
-  Shoots.clear();
-  print("Game Over! ");
-  print("Score:", Score);
-  println(" Time:", dt / 60, "min", dt % 60, "sec");
-  loop = false;
-  noLoop();
-  fill(empty, 192);
+  fill(empty, 224);
   rect(0, 0, width, height);
+  fill(52, 101, 164);
+  textAlign(CENTER);
+  textSize(96);
+  text("Game Over!", 
+    0.2*width, 0.2*height, 0.6*width, 0.2*height);
+  textSize(64);
+  text("Score: "+str(score), 
+    0.2*width, 0.4*height, 0.6*width, 0.2*height);
+  text("Time: "+str(dt/60)+" min "+str(dt%60)+" sec", 
+    0.2*width, 0.6*height, 0.6*width, 0.2*height);
   GameOver = true;
   return;
 }

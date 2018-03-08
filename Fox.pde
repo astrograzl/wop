@@ -4,9 +4,9 @@ class Fox extends Animal
   {
     super(25, grass);
     type = 'X';
-    lives = 5;
+    lives = 3;
     value = 20;
-    update = 7;
+    update = 15;
     kolor = color(239, 42, 41, 192);
   }
   

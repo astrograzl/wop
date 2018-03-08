@@ -6,7 +6,7 @@ class Bird extends Animal
     type = 'B';
     lives = 1;
     value = 15;
-    update = 10;
+    update = 50;
     kolor = color(46, 52, 54, 192);
   }
 
