@@ -1,15 +1,17 @@
+final color fox = color(239, 42, 41);
+
 class Fox extends Animal
 {
   Fox()
   {
     super(25, grass);
     type = 'X';
-    lives = 3;
-    value = 20;
+    lives = 5;
+    value = 0;
     update = 15;
-    kolor = color(239, 42, 41, 192);
+    kolor = color(fox, 192);
   }
-  
+
   void move()
   {
     int xx = x;

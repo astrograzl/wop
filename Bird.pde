@@ -1,3 +1,5 @@
+final color bird = color(46, 52, 54);
+
 class Bird extends Animal
 {
   Bird()
@@ -5,9 +7,9 @@ class Bird extends Animal
     super(50, empty);
     type = 'B';
     lives = 1;
-    value = 15;
+    value = 10;
     update = 50;
-    kolor = color(46, 52, 54, 192);
+    kolor = color(bird, 192);
   }
 
   void show()

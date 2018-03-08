@@ -4,12 +4,14 @@ class Player
   int y = -99;
   final int size = 25;
   final color kolor = color(255);
+  boolean flying = false;
   boolean swiming = false;
   boolean climbing = false;
-  int shooting = 75;
+  int shooting;
 
   void init()
   {
+    shooting = 75;
     boolean ok = false;
     while (!ok) {
       int xx = int(random(Width-size) / size) * size;
@@ -39,19 +41,31 @@ class Player
     int xx = x;
     int yy = y;
     switch (mm) {
-    case 'a': 
-      xx -= size;  
+    case 'a':
+      xx -= size;
       break;
-    case 'd': 
-      xx += size; 
+    case 'A':
+      xx -= 5 * size;
+      break;
+    case 'd':
+      xx += size;
+      break;
+    case 'D':
+      xx += 5 * size;
       break;
     case 's':
-      yy += size; 
+      yy += size;
       break;
-    case 'w': 
-      yy -= size; 
+    case 'S':
+      yy += 5 * size;
       break;
-    default: 
+    case 'w':
+      yy -= size;
+      break;
+    case 'W':
+      yy -= 5 * size;
+      break;
+    default:
       break;
     }
     if (xx < 0) xx += Width;
@@ -59,7 +73,8 @@ class Player
     if (xx >= Width) xx -= Width;
     if (yy >= Hight) yy -= Hight;
     color cc = pixel(xx, yy);
-    if ((cc == grass || cc == empty)
+    if ((cc == grass)
+      || (cc == empty && flying)
       || (cc == water && swiming)
       || (cc == trees && climbing)) {
       x = xx;
@@ -74,23 +89,24 @@ class Player
       shoot(6);
       shoot(2);
       shoot(8);
+      return;
     }
     if (Shoots.size() == 8) return;
     else score -= 1;
     switch (sh) {
     case 4:
-      Shoots.add(new Shoot(x, y, -1, 0)); 
+      Shoots.add(new Shoot(x, y, -1, 0));
       break;
-    case 6: 
-      Shoots.add(new Shoot(x, y, 1, 0)); 
+    case 6:
+      Shoots.add(new Shoot(x, y, 1, 0));
       break;
-    case 2: 
-      Shoots.add(new Shoot(x, y, 0, 1)); 
+    case 2:
+      Shoots.add(new Shoot(x, y, 0, 1));
       break;
-    case 8: 
-      Shoots.add(new Shoot(x, y, 0, -1)); 
+    case 8:
+      Shoots.add(new Shoot(x, y, 0, -1));
       break;
-    default: 
+    default:
       break;
     }
   }

@@ -4,7 +4,7 @@ final color trees = color(143, 89, 2);
 final color water = color(32, 74, 135);
 final color[] Colors = {grass, trees, water};
 
-final int[] Sizes = {100, 50, 25, 25};
+final int[] Sizes = {100, 50, 25};
 final int[] Steps = {500, 750, 2000};
 
 Block Grass = new Block(0);

@@ -1,3 +1,5 @@
+final color fish = color(252, 234, 79);
+
 class Fish extends Animal
 {
   Fish()
@@ -5,8 +7,8 @@ class Fish extends Animal
     super(25, water);
     type = 'F';
     lives = 2;
-    value = 10;
+    value = 15;
     update = 50;
-    kolor = color(252, 234, 79, 192);
+    kolor = color(fish, 192);
   }
 }

@@ -1,3 +1,5 @@
+final color rabit = color(136, 138, 133);
+
 class Rabit extends Animal
 {
   Rabit()
@@ -7,6 +9,6 @@ class Rabit extends Animal
     lives = 1;
     value = 5;
     update = 25;
-    kolor = color(136, 138, 133, 192);
+    kolor = color(rabit, 192);
   }
 }
