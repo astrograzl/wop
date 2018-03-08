@@ -104,8 +104,6 @@ void mkworld()
   save("world.tif");
   World = loadImage("world.tif");
   Scores.increment("W");
-  if (Scores.get("W") > 20)
-    gameover();
 }
 
 void mkanime()
@@ -206,8 +204,17 @@ void shoots()
 
 void animals()
 {
+  if (Animals.isEmpty()) return;
+  Animal Fox = Animals.get(0);
   for (int a = Animals.size() - 1; a >= 0; a--) {
     Animal animal = Animals.get(a);
+    if (animal.type == 'R'
+      && animal.x == Fox.x
+      && animal.y == Fox.y) {
+      score += animal.value;
+      Animals.remove(a);
+      continue;
+    }
     if (frameCount % animal.update == 0)
       animal.move();
     animal.show();
@@ -245,6 +252,7 @@ void progress()
   rect(1450, Hight, 10*5, 15);
   fill(color(fox));
   rect(1450, Hight, 10*min(Scores.get("X", 0), 5), 15);
+  if (Scores.get("W", 0) == 20) gameover();
 }
 
 color pixel(int x, int y) {
