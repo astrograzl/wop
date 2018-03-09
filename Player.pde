@@ -84,27 +84,43 @@ class Player
 
   void shoot(int sh)
   {
-    if (sh == 5 && Shoots.size() <= 4) {
+    if (sh == 5 && Shoots.size() == 0) {
+      shoot(1);
+      shoot(2);
+      shoot(3);
       shoot(4);
       shoot(6);
-      shoot(2);
+      shoot(7);
       shoot(8);
+      shoot(9);
       return;
     }
     if (Shoots.size() == 8) return;
     else score -= 1;
     switch (sh) {
+    case 1:
+      Shoots.add(new Shoot(x, y, -1, 1));
+      break;
+    case 2:
+      Shoots.add(new Shoot(x, y, 0, 1));
+      break;
+    case 3:
+      Shoots.add(new Shoot(x, y, 1, 1));
+      break;
     case 4:
       Shoots.add(new Shoot(x, y, -1, 0));
       break;
     case 6:
       Shoots.add(new Shoot(x, y, 1, 0));
       break;
-    case 2:
-      Shoots.add(new Shoot(x, y, 0, 1));
+    case 7:
+      Shoots.add(new Shoot(x, y, -1, -1));
       break;
     case 8:
       Shoots.add(new Shoot(x, y, 0, -1));
+      break;
+    case 9:
+      Shoots.add(new Shoot(x, y, 1, -1));
       break;
     default:
       break;

@@ -73,20 +73,32 @@ void keyPressed()
     case 'W':
       Pixel.move('W');
       break;
-    case '4':
-      Pixel.shoot(4);
-      break;
-    case '6':
-      Pixel.shoot(6);
+    case '1':
+      Pixel.shoot(1);
       break;
     case '2':
       Pixel.shoot(2);
       break;
-    case '8':
-      Pixel.shoot(8);
+    case '3':
+      Pixel.shoot(3);
+      break;
+    case '4':
+      Pixel.shoot(4);
       break;
     case '5':
       Pixel.shoot(5);
+      break;
+    case '6':
+      Pixel.shoot(6);
+      break;
+    case '7':
+      Pixel.shoot(7);
+      break;
+    case '8':
+      Pixel.shoot(8);
+      break;
+    case '9':
+      Pixel.shoot(9);
       break;
     default:
       break;
@@ -98,7 +110,6 @@ void reset()
   reset = false;
   for (Anime anime : Animes)
     score -= anime.value;
-  Total.remove("X");
   Animes.clear();
   mkworld();
   mkanime();
@@ -274,6 +285,8 @@ void gameover()
 {
   noLoop();
   int dt = millis() / 1000;
+  Pixel = new Player();
+  player();
   for (Anime anime : Animes) score -= anime.value;
   if (Pixel.shooting >= max(Width, Hight)) score += 100;
   if (Pixel.climbing) score += 100;
