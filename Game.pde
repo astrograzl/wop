@@ -23,12 +23,11 @@ ArrayList<Animal> Animals = new ArrayList<Animal>();
 
 void draw()
 {
-  if (reset) {
-    reset = false;
-    mkworld();
-    mkanime();
-    mkgame();
-  }
+  if (reset)
+    if (Scores.get("W", 0) == 20) {
+      gameover();
+      return;
+    } else reset();
   image(World, 0, 0);
   player();
   shoots();
@@ -93,6 +92,18 @@ void keyPressed()
     }
 }
 
+void reset()
+{
+  reset = false;
+  for (Animal animal : Animals)
+    score -= animal.value;
+  Scores.remove("X");
+  Animals.clear();
+  mkworld();
+  mkanime();
+  mkgame();
+}
+
 void mkworld()
 {
   background(empty);
@@ -108,10 +119,6 @@ void mkworld()
 
 void mkanime()
 {
-  for (Animal animal : Animals)
-    score -= animal.value;
-  Scores.remove("X");
-  Animals.clear();
   for (int i = 0; i < 1; i++)
     Animals.add(new Fox());
   for (int i = 0; i < 3; i++)
@@ -127,7 +134,6 @@ void mkanime()
 void mkgame()
 {
   noLoop();
-  score = 0;
   Shoots.clear();
   Pixel = new Player();
   GameOver = false;
@@ -252,7 +258,6 @@ void progress()
   rect(1450, Hight, 10*5, 15);
   fill(color(fox));
   rect(1450, Hight, 10*min(Scores.get("X", 0), 5), 15);
-  if (Scores.get("W", 0) == 20) gameover();
 }
 
 color pixel(int x, int y) {
@@ -276,12 +281,13 @@ void gameover()
   text("Game Over!", 
     0.2*width, 0.2*height, 0.6*width, 0.2*height);
   textSize(64);
-  text("Score: "+str(score)+" Level: "+str(Scores.get("W")), 
+  text("Score: "+str(score)+"  Level: "+str(Scores.get("W")), 
     0.2*width, 0.4*height, 0.6*width, 0.2*height);
   text("Time: "+str(dt/60)+" min "+str(dt%60)+" sec", 
     0.2*width, 0.6*height, 0.6*width, 0.2*height);
   GameOver = true;
   Animals.clear();
   Scores.clear();
+  score = 0;
   return;
 }
