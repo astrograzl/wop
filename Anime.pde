@@ -19,7 +19,7 @@ class Anime
       int yy = int(random(Hight-size) / size) * size;
       color ci = pixel(xx, yy);
       color cf = pixel(xx+size-1, yy+size-1);
-      if (medium == empty || (ci == medium && cf == medium)) {
+      if (medium == black || (ci == medium && cf == medium)) {
         ok = true;
         x = xx;
         y = yy;

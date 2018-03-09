@@ -141,6 +141,9 @@ void mkanime()
     Animes.add(new Rabit());
   for (int i = 0; i < 15; i++)
     Animes.add(new Fish());
+  if (Total.get("W", 0) > 10)
+    for (int g = 0; g < 3; g++)
+      Animes.add(new Frog());
 }
 
 void mkgame()
@@ -169,6 +172,7 @@ void player()
 
 void shoots()
 {
+  boolean frog = false;
   for (int s = Shoots.size() - 1; s >= 0; s--) {
     Shoot shoot = Shoots.get(s);
     shoot.move();
@@ -178,8 +182,17 @@ void shoots()
       continue;
     }
     if (pixel(shoot.x, shoot.y) == empty) {
-      Shoots.remove(s);
-      continue;
+      for (Anime anime : Animes)
+        if (anime.type == 'G'
+          && anime.x == Pixel.x
+          && anime.y == Pixel.y) {
+          frog = true;
+          break;
+        }
+      if (!frog) {
+        Shoots.remove(s);
+        continue;
+      }
     }
     if (shoot.x < 0 || shoot.x >= Width
       || shoot.y < 0 || shoot.y >= Hight) {
@@ -191,8 +204,8 @@ void shoots()
       if (shoot.x >= anime.x && shoot.x < anime.x+anime.size
         && shoot.y >= anime.y && shoot.y < anime.y+anime.size) {
         if (anime.type == 'X') Total.increment("X");
-        anime.lives -= 1;
         Shoots.remove(s);
+        anime.lives -= 1;
         if (anime.lives == 0) {
           score += anime.value;
           switch (anime.type) {
@@ -239,13 +252,15 @@ void animes()
       continue;
     }
     if (frameCount % anime.update == 0)
-      anime.move();
-    anime.show();
+      if (anime.type == 'G')
+        for (int g = 0; g < 100; g++)
+          anime.move();
+      else anime.move();
     if (anime.x < 0 || anime.x >= Width
       || anime.y < 0 || anime.y >= Hight) {
       score -= anime.value;
       Animes.remove(a);
-    }
+    } else anime.show();
   }
 }
 

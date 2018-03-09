@@ -1,3 +1,4 @@
+final color black = color(0);
 final color empty = color(192);
 final color grass = color(78, 154, 6);
 final color trees = color(143, 89, 2);

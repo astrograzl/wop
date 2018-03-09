@@ -4,7 +4,7 @@ class Bird extends Anime
 {
   Bird()
   {
-    super(50, empty);
+    super(50, black);
     type = 'B';
     lives = 1;
     value = 10;
