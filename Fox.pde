@@ -1,6 +1,6 @@
 final color fox = color(239, 42, 41);
 
-class Fox extends Animal
+class Fox extends Anime
 {
   Fox()
   {

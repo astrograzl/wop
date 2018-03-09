@@ -1,6 +1,6 @@
 final color deer = color(233, 185, 110);
 
-class Deer extends Animal
+class Deer extends Anime
 {
   Deer()
   {

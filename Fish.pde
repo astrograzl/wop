@@ -1,6 +1,6 @@
 final color fish = color(252, 234, 79);
 
-class Fish extends Animal
+class Fish extends Anime
 {
   Fish()
   {

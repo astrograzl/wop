@@ -1,6 +1,6 @@
 final color rabit = color(136, 138, 133);
 
-class Rabit extends Animal
+class Rabit extends Anime
 {
   Rabit()
   {

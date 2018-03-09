@@ -1,6 +1,6 @@
 final color bird = color(46, 52, 54);
 
-class Bird extends Animal
+class Bird extends Anime
 {
   Bird()
   {

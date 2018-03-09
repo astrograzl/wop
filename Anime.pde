@@ -1,4 +1,4 @@
-class Animal
+class Anime
 {
   char type;
   int x, y;
@@ -9,7 +9,7 @@ class Animal
   color kolor;
   color medium;
 
-  Animal(int s, color m)
+  Anime(int s, color m)
   {
     size = s;
     medium = m;
