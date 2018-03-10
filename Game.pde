@@ -16,7 +16,6 @@ int score;
 PImage World;
 Player Pixel;
 boolean reset;
-boolean GameOver;
 IntDict Level = new IntDict();
 IntDict Total = new IntDict();
 ArrayList<Shoot> Shoots = new ArrayList<Shoot>();
@@ -30,79 +29,77 @@ void draw()
       return;
     } else reset();
   image(World, 0, 0);
+  animes();
   player();
   shoots();
-  animes();
   progress();
 }
 
 void keyPressed()
 {
-  if (key == BACKSPACE) {
+  switch (key) {
+  case BACKSPACE:
     reset = true;
     redraw();
     return;
+  case ENTER:
+  case RETURN:
+    loop();
+    break;
+  case 'a':
+    Pixel.move('a');
+    break;
+  case 'A':
+    Pixel.move('A');
+    break;
+  case 'd':
+    Pixel.move('d');
+    break;
+  case 'D':
+    Pixel.move('D');
+    break;
+  case 's':
+    Pixel.move('s');
+    break;
+  case 'S':
+    Pixel.move('S');
+    break;
+  case 'w':
+    Pixel.move('w');
+    break;
+  case 'W':
+    Pixel.move('W');
+    break;
+  case '1':
+    Pixel.shoot(1);
+    break;
+  case '2':
+    Pixel.shoot(2);
+    break;
+  case '3':
+    Pixel.shoot(3);
+    break;
+  case '4':
+    Pixel.shoot(4);
+    break;
+  case '5':
+    Pixel.shoot(5);
+    break;
+  case '6':
+    Pixel.shoot(6);
+    break;
+  case '7':
+    Pixel.shoot(7);
+    break;
+  case '8':
+    Pixel.shoot(8);
+    break;
+  case '9':
+    Pixel.shoot(9);
+    break;
+  default:
+    break;
   }
-  if (!GameOver)
-    switch (key) {
-    case ENTER:
-    case RETURN:
-      loop();
-      break;
-    case 'a':
-      Pixel.move('a');
-      break;
-    case 'A':
-      Pixel.move('A');
-      break;
-    case 'd':
-      Pixel.move('d');
-      break;
-    case 'D':
-      Pixel.move('D');
-      break;
-    case 's':
-      Pixel.move('s');
-      break;
-    case 'S':
-      Pixel.move('S');
-      break;
-    case 'w':
-      Pixel.move('w');
-      break;
-    case 'W':
-      Pixel.move('W');
-      break;
-    case '1':
-      Pixel.shoot(1);
-      break;
-    case '2':
-      Pixel.shoot(2);
-      break;
-    case '3':
-      Pixel.shoot(3);
-      break;
-    case '4':
-      Pixel.shoot(4);
-      break;
-    case '5':
-      Pixel.shoot(5);
-      break;
-    case '6':
-      Pixel.shoot(6);
-      break;
-    case '7':
-      Pixel.shoot(7);
-      break;
-    case '8':
-      Pixel.shoot(8);
-      break;
-    case '9':
-      Pixel.shoot(9);
-      break;
-    default:
-      break;
-    }
 }
 
 void reset()
@@ -110,7 +107,6 @@ void reset()
   reset = false;
   for (Anime anime : Animes)
     score -= anime.value;
-  Animes.clear();
   mkworld();
   mkanime();
   mkgame();
@@ -131,6 +127,7 @@ void mkworld()
 
 void mkanime()
 {
+  Animes.clear();
   for (int i = 0; i < 1; i++)
     Animes.add(new Fox());
   for (int i = 0; i < 3; i++)
@@ -152,7 +149,6 @@ void mkgame()
   Level.clear();
   Shoots.clear();
   Pixel = new Player();
-  GameOver = false;
 }
 
 void player()
@@ -240,7 +236,6 @@ void shoots()
 
 void animes()
 {
-  if (Animes.isEmpty()) return;
   Anime Fox = Animes.get(0);
   for (int a = Animes.size() - 1; a >= 0; a--) {
     Anime anime = Animes.get(a);
@@ -319,7 +314,6 @@ void gameover()
     0.2*width, 0.4*height, 0.6*width, 0.2*height);
   text("Time: "+str(dt/60)+" min "+str(dt%60)+" sec", 
     0.2*width, 0.6*height, 0.6*width, 0.2*height);
-  GameOver = true;
   Animes.clear();
   Total.clear();
   score = 0;
