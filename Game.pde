@@ -122,6 +122,7 @@ void mkworld()
   }
   save("world.tif");
   World = loadImage("world.tif");
+  World = loadImage("myworld.tif");
   Total.increment("W");
 }
 
