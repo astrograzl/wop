@@ -1,9 +1,9 @@
-final int Width = 1500;
-final int Hight = 1000;
+final int Width = 1950; //1500;
+final int Hight = 1100;  //1000;
 
 void setup()
 {
-  size(1500, 1015, P2D);
+  size(1920, 1080, P2D);
   ellipseMode(CORNER);
   rectMode(CORNER);
   noStroke();
@@ -12,9 +12,11 @@ void setup()
   mkgame();
 }
 
+int today;
 int score;
 PImage World;
 Player Pixel;
+Robot Ghost;
 boolean reset;
 IntDict Level = new IntDict();
 IntDict Total = new IntDict();
@@ -33,6 +35,8 @@ void draw()
   player();
   shoots();
   progress();
+  saveFrame("static/#######.png");
+  if (frameCount > 100000) gameover();
 }
 
 void keyPressed()
@@ -146,10 +150,12 @@ void mkanime()
 
 void mkgame()
 {
-  noLoop();
+  //noLoop();
   Level.clear();
   Shoots.clear();
   Pixel = new Player();
+  Ghost = new Robot(Pixel);
+  if (Total.get("W", 0) == 1) today = millis();
 }
 
 void player()
@@ -165,6 +171,7 @@ void player()
     if (Level.get("F", 0) >= 5) Pixel.swiming = true;
     Pixel.show();
   }
+  Ghost.update();
 }
 
 void shoots()
@@ -294,8 +301,9 @@ color pixel(int x, int y) {
 
 void gameover()
 {
-  noLoop();
-  int dt = millis() / 1000;
+  //noLoop();
+  reset = true;
+  int dt = (millis() - today) / 1000;
   Pixel = new Player();
   player();
   for (Anime anime : Animes) score -= anime.value;
@@ -315,6 +323,7 @@ void gameover()
     0.2*width, 0.4*height, 0.6*width, 0.2*height);
   text("Time: "+str(dt/60)+" min "+str(dt%60)+" sec", 
     0.2*width, 0.6*height, 0.6*width, 0.2*height);
+  saveFrame("static/0x#######.png");
   Animes.clear();
   Total.clear();
   score = 0;

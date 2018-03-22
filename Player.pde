@@ -14,8 +14,8 @@ class Player
     shooting = 75;
     boolean ok = false;
     while (!ok) {
-      int xx = int(random(Width-size) / size) * size;
-      int yy = int(random(Hight-size) / size) * size;
+      int xx = width / 2; //int(random(Width-size) / size) * size;
+      int yy = height / 2; //int(random(Hight-size) / size) * size;
       if (pixel(xx, yy) == grass) {
         ok = true;
         x = xx;
