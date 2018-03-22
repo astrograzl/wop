@@ -1,9 +1,12 @@
-final int Width = 1950; //1500;
-final int Hight = 1100;  //1000;
+final int Milenium = 40000;
+final int Epoch = 2000;
+
+final int Width = 1500;
+final int Hight = 1000;
 
 void setup()
 {
-  size(1920, 1080, P2D);
+  size(1500, 1015, P2D);
   ellipseMode(CORNER);
   rectMode(CORNER);
   noStroke();
@@ -36,7 +39,9 @@ void draw()
   shoots();
   progress();
   saveFrame("static/#######.png");
-  if (frameCount > 100000) gameover();
+  if (frameCount % Epoch == 0) reset = true;
+  if (frameCount == Milenium) gameover();
+  println(frameCount);
 }
 
 void keyPressed()
@@ -327,5 +332,6 @@ void gameover()
   Animes.clear();
   Total.clear();
   score = 0;
+  exit();
   return;
 }
