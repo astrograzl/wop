@@ -1,6 +1,4 @@
-final int Milenium = 40000;
-final int Epoch = 2000;
-
+final int Epoch = 2048;
 final int Width = 1500;
 final int Hight = 1000;
 
@@ -9,51 +7,34 @@ void setup()
   size(1500, 1015, P2D);
   ellipseMode(CORNER);
   rectMode(CORNER);
+  frameRate(360);
   noStroke();
-  mkworld();
-  mkanime();
-  mkgame();
+  newLevel();
 }
 
-int today;
+int time;
 int score;
 PImage World;
 Player Pixel;
-Robot Ghost;
-boolean reset;
 IntDict Level = new IntDict();
 IntDict Total = new IntDict();
 ArrayList<Shoot> Shoots = new ArrayList<Shoot>();
 ArrayList<Anime> Animes = new ArrayList<Anime>();
 
-void draw()
-{
-  if (reset)
-    if (Total.get("W", 0) == 20) {
-      gameover();
-      return;
-    } else reset();
-  image(World, 0, 0);
-  animes();
-  player();
-  shoots();
-  progress();
-  saveFrame("static/#######.png");
-  if (frameCount % Epoch == 0) reset = true;
-  if (frameCount == Milenium) gameover();
-  println(frameCount);
-}
-
 void keyPressed()
 {
   switch (key) {
   case BACKSPACE:
-    reset = true;
+    endLevel();
+    noLoop();
     redraw();
     return;
   case ENTER:
   case RETURN:
     loop();
+    break;
+  case 'q':
+    exit();
     break;
   case 'a':
     Pixel.move('a');
@@ -106,77 +87,64 @@ void keyPressed()
   case '9':
     Pixel.shoot(9);
     break;
+  case '0':
+    break;
   default:
     break;
   }
 }
 
-void reset()
+void draw()
 {
-  reset = false;
-  for (Anime anime : Animes)
-    score -= anime.value;
-  mkworld();
-  mkanime();
-  mkgame();
+  image(World, 0, 0);
+  shoots();
+  animes();
+  proces();
+  player();
+  if (frameCount % Epoch == 0)
+    endLevel();
 }
 
-void mkworld()
+void newLevel()
 {
-  background(empty);
-  for (int b = 0; b < Blocks.length; b++) {
-    Blocks[b].init();
-    for (int s = 0; s < Steps[b]; s++)
-      Blocks[b].step();
-  }
-  save("world.tif");
-  World = loadImage("world.tif");
-  World = loadImage("myworld.tif");
-  Total.increment("W");
-}
-
-void mkanime()
-{
+  Level.clear();
   Animes.clear();
-  for (int i = 0; i < 1; i++)
+  Shoots.clear();
+  Total.increment("W");
+  background(empty);
+  //for (int b = 0; b < Blocks.length; b++) {
+  //  Blocks[b].init();
+  //  for (int s = 0; s < Steps[b]; s++)
+  //    Blocks[b].step();
+  //}
+  //save("world.tif");
+  //World = loadImage("world.tif");
+  World = loadImage("myworld.tif");
+  for (int x = 0; x < 1; x++)
     Animes.add(new Fox());
-  for (int i = 0; i < 3; i++)
+  for (int b = 0; b < 3; b++)
     Animes.add(new Bird());
-  for (int i = 0; i < 5; i++)
+  for (int d = 0; d < 5; d++)
     Animes.add(new Deer());
-  for (int i = 0; i < 10; i++)
+  for (int r = 0; r < 10; r++)
     Animes.add(new Rabit());
-  for (int i = 0; i < 15; i++)
+  for (int f = 0; f < 15; f++)
     Animes.add(new Fish());
   if (Total.get("W", 0) > 10)
     for (int g = 0; g < 3; g++)
       Animes.add(new Frog());
-}
-
-void mkgame()
-{
-  //noLoop();
-  Level.clear();
-  Shoots.clear();
-  Pixel = new Player();
-  Ghost = new Robot(Pixel);
-  if (Total.get("W", 0) == 1) today = millis();
+  Pixel = new Robot();
 }
 
 void player()
 {
-  if (Pixel.x < 0 && Pixel.y < 0) {
-    Pixel.init();
-    if (Total.get("R", 0) >= 25) Pixel.shooting = max(Width, Hight);
-    if (Total.get("D", 0) >= 20) Pixel.climbing = true;
-    if (Total.get("F", 0) >= 50) Pixel.swiming = true;
-    if (Total.get("B", 0) >= 30) Pixel.flying = true;
-  } else {
-    if (Level.get("D", 0) >= 3) Pixel.climbing = true;
-    if (Level.get("F", 0) >= 5) Pixel.swiming = true;
-    Pixel.show();
-  }
-  Ghost.update();
+  if (Total.get("R", 0) >= 25) Pixel.shooting = max(Width, Hight);
+  if (Total.get("D", 0) >= 20) Pixel.climbing = true;
+  if (Total.get("F", 0) >= 50) Pixel.swiming = true;
+  if (Total.get("B", 0) >= 30) Pixel.flying = true;
+  if (Level.get("D", 0) >= 3) Pixel.climbing = true;
+  if (Level.get("F", 0) >= 5) Pixel.swiming = true;
+  Pixel.update();
 }
 
 void shoots()
@@ -216,6 +184,7 @@ void shoots()
         Shoots.remove(s);
         anime.lives -= 1;
         if (anime.lives == 0) {
+          Animes.remove(a);
           score += anime.value;
           switch (anime.type) {
           case 'R':
@@ -234,12 +203,11 @@ void shoots()
             Total.increment("B");
             break;
           case 'X':
-            gameover();
+            endGame();
             return;
           default:
             break;
           }
-          Animes.remove(a);
         }
         break;
       }
@@ -272,46 +240,49 @@ void animes()
   }
 }
 
-void progress()
+void proces()
 {
   fill(color(rabit, 96));
-  rect(000, Hight, 10*25, 15);
+  rect(000, Hight, 10*25, 10);
   fill(color(rabit));
-  rect(000, Hight, 10*min(Total.get("R", 0), 25), 15);
+  rect(000, Hight, 10*min(Total.get("R", 0), 25), 10);
   fill(color(fish, 96));
-  rect(250, Hight, 10*50, 15);
-  fill(color(252, 234, 79));
-  rect(250, Hight, 10*min(Total.get("F", 0), 50), 15);
+  rect(250, Hight, 10*50, 10);
+  fill(color(fish));
+  rect(250, Hight, 10*min(Total.get("F", 0), 50), 10);
   fill(color(deer, 96));
-  rect(750, Hight, 10*20, 15);
+  rect(750, Hight, 10*20, 10);
   fill(color(deer));
-  rect(750, Hight, 10*min(Total.get("D", 0), 20), 15);
+  rect(750, Hight, 10*min(Total.get("D", 0), 20), 10);
   fill(color(bird, 96));
-  rect(950, Hight, 10*30, 15);
+  rect(950, Hight, 10*30, 10);
   fill(color(bird));
-  rect(950, Hight, 10*min(Total.get("B", 0), 30), 15);
+  rect(950, Hight, 10*min(Total.get("B", 0), 30), 10);
   fill(color(255, 96));
-  rect(1250, Hight, 10*20, 15);
+  rect(1250, Hight, 10*20, 10);
   fill(color(255));
-  rect(1250, Hight, 10*min(Total.get("W", 0), 20), 15);
+  rect(1250, Hight, 10*min(Total.get("W", 0), 20), 10);
   fill(color(fox, 96));
-  rect(1450, Hight, 10*5, 15);
+  rect(1450, Hight, 10*5, 10);
   fill(color(fox));
-  rect(1450, Hight, 10*min(Total.get("X", 0), 5), 15);
+  rect(1450, Hight, 10*min(Total.get("X", 0), 5), 10);
+  fill(color(245, 121, 0, 96));
+  rect(0, Hight+10, Width, 5);
+  fill(color(245, 121, 0));
+  rect(0, Hight+10, frameCount%Epoch*float(Width)/float(Epoch), 5);
 }
 
-color pixel(int x, int y) {
-  return World.get(x, y);
-}
-
-void gameover()
+void endLevel()
 {
-  //noLoop();
-  reset = true;
-  int dt = (millis() - today) / 1000;
-  Pixel = new Player();
-  player();
-  for (Anime anime : Animes) score -= anime.value;
+  for (Anime anime : Animes)
+    score -= anime.value;
+  if (Total.get("W", 0) == 20) endGame();
+  else newLevel();
+}
+
+void endGame()
+{
+  int time = millis() / 1000;
   if (Pixel.shooting >= max(Width, Hight)) score += 100;
   if (Pixel.climbing) score += 100;
   if (Pixel.swiming) score += 100;
@@ -326,12 +297,12 @@ void gameover()
   textSize(64);
   text("Score: "+str(score)+"  Level: "+str(Total.get("W")), 
     0.2*width, 0.4*height, 0.6*width, 0.2*height);
-  text("Time: "+str(dt/60)+" min "+str(dt%60)+" sec", 
+  text("Time: "+str(time/60)+" min "+str(time%60)+" sec",
     0.2*width, 0.6*height, 0.6*width, 0.2*height);
-  saveFrame("static/0x#######.png");
-  Animes.clear();
-  Total.clear();
-  score = 0;
+  saveFrame("GameOver.png");
   exit();
-  return;
+}
+
+color pixel(int x, int y) {
+  return World.get(x, y);
 }

@@ -1,21 +1,20 @@
 class Player
 {
-  int x = -99;
-  int y = -99;
   final int size = 25;
   final color kolor = color(255);
   boolean flying = false;
   boolean swiming = false;
   boolean climbing = false;
-  int shooting;
+  int shooting = 75;
+  int x;
+  int y;
 
-  void init()
+  Player()
   {
-    shooting = 75;
     boolean ok = false;
     while (!ok) {
-      int xx = width / 2; //int(random(Width-size) / size) * size;
-      int yy = height / 2; //int(random(Hight-size) / size) * size;
+      int xx = int(random(Width-size) / size) * size;
+      int yy = int(random(Hight-size) / size) * size;
       if (pixel(xx, yy) == grass) {
         ok = true;
         x = xx;
@@ -125,5 +124,10 @@ class Player
     default:
       break;
     }
+  }
+
+  void update()
+  {
+    show();
   }
 }
